@@ -1,0 +1,575 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="rozkladModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'rozklad.dbo.audience' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="audience">
+          <Key>
+            <PropertyRef Name="id_audience" />
+            <PropertyRef Name="audience_number" />
+          </Key>
+          <Property Name="id_audience" Type="int" Nullable="false" />
+          <Property Name="audience_number" Type="int" Nullable="false" />
+          <Property Name="count_st" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'rozklad.dbo.campus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="campus">
+          <Key>
+            <PropertyRef Name="id_cam" />
+          </Key>
+          <Property Name="id_cam" Type="int" Nullable="false" />
+          <Property Name="address_cam" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="flow">
+          <Key>
+            <PropertyRef Name="id_flow" />
+          </Key>
+          <Property Name="id_flow" Type="int" Nullable="false" />
+          <Property Name="flow_name" Type="nvarchar" MaxLength="3" />
+          <Property Name="st_count" Type="int" />
+        </EntityType>
+        <EntityType Name="groups">
+          <Key>
+            <PropertyRef Name="id_gr" />
+          </Key>
+          <Property Name="id_gr" Type="int" Nullable="false" />
+          <Property Name="group_name" Type="text" />
+          <Property Name="st_counts" Type="int" />
+          <Property Name="id_fl" Type="int" />
+        </EntityType>
+        <EntityType Name="kafedra">
+          <Key>
+            <PropertyRef Name="id_kaf" />
+          </Key>
+          <Property Name="id_kaf" Type="int" Nullable="false" />
+          <Property Name="kaf_name" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="lecturer">
+          <Key>
+            <PropertyRef Name="id_lecturer" />
+          </Key>
+          <Property Name="id_lecturer" Type="int" Nullable="false" />
+          <Property Name="lect_name" Type="nvarchar" MaxLength="20" />
+          <Property Name="position" Type="nvarchar" MaxLength="10" />
+          <Property Name="kaf_lec" Type="int" />
+        </EntityType>
+        <EntityType Name="shchedule">
+          <Key>
+            <PropertyRef Name="pair_num" />
+            <PropertyRef Name="id_group" />
+            <PropertyRef Name="id_subject" />
+            <PropertyRef Name="id_lecturer" />
+            <PropertyRef Name="id_campus" />
+            <PropertyRef Name="id_audience" />
+          </Key>
+          <Property Name="day_week" Type="nvarchar" MaxLength="10" />
+          <Property Name="pair_num" Type="int" Nullable="false" />
+          <Property Name="id_group" Type="int" Nullable="false" />
+          <Property Name="id_subject" Type="int" Nullable="false" />
+          <Property Name="id_lecturer" Type="int" Nullable="false" />
+          <Property Name="id_campus" Type="int" Nullable="false" />
+          <Property Name="id_audience" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="subjects">
+          <Key>
+            <PropertyRef Name="id_sub" />
+          </Key>
+          <Property Name="id_sub" Type="int" Nullable="false" />
+          <Property Name="sub_name" Type="nvarchar" MaxLength="20" />
+          <Property Name="sab_kaf" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="gr_fl">
+          <End Role="flow" Type="Self.flow" Multiplicity="0..1" />
+          <End Role="groups" Type="Self.groups" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="flow">
+              <PropertyRef Name="id_flow" />
+            </Principal>
+            <Dependent Role="groups">
+              <PropertyRef Name="id_fl" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="kaf">
+          <End Role="kafedra" Type="Self.kafedra" Multiplicity="0..1" />
+          <End Role="subjects" Type="Self.subjects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kafedra">
+              <PropertyRef Name="id_kaf" />
+            </Principal>
+            <Dependent Role="subjects">
+              <PropertyRef Name="sab_kaf" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="kaf_l">
+          <End Role="kafedra" Type="Self.kafedra" Multiplicity="0..1" />
+          <End Role="lecturer" Type="Self.lecturer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kafedra">
+              <PropertyRef Name="id_kaf" />
+            </Principal>
+            <Dependent Role="lecturer">
+              <PropertyRef Name="kaf_lec" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <!--Errors Found During Generation:
+warning 6035: The relationship 'sh_aud' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="sh_aud" />-->
+        <Association Name="sh_cam">
+          <End Role="campus" Type="Self.campus" Multiplicity="1" />
+          <End Role="shchedule" Type="Self.shchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="campus">
+              <PropertyRef Name="id_cam" />
+            </Principal>
+            <Dependent Role="shchedule">
+              <PropertyRef Name="id_campus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="sh_gr">
+          <End Role="groups" Type="Self.groups" Multiplicity="1" />
+          <End Role="shchedule" Type="Self.shchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="groups">
+              <PropertyRef Name="id_gr" />
+            </Principal>
+            <Dependent Role="shchedule">
+              <PropertyRef Name="id_group" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="sh_lec">
+          <End Role="lecturer" Type="Self.lecturer" Multiplicity="1" />
+          <End Role="shchedule" Type="Self.shchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="lecturer">
+              <PropertyRef Name="id_lecturer" />
+            </Principal>
+            <Dependent Role="shchedule">
+              <PropertyRef Name="id_lecturer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="sh_sub">
+          <End Role="subjects" Type="Self.subjects" Multiplicity="1" />
+          <End Role="shchedule" Type="Self.shchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subjects">
+              <PropertyRef Name="id_sub" />
+            </Principal>
+            <Dependent Role="shchedule">
+              <PropertyRef Name="id_subject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="rozkladModelStoreContainer">
+          <EntitySet Name="flow" EntityType="Self.flow" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="groups" EntityType="Self.groups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="kafedra" EntityType="Self.kafedra" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="lecturer" EntityType="Self.lecturer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="shchedule" EntityType="Self.shchedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="subjects" EntityType="Self.subjects" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="audience" EntityType="Self.audience" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [audience].[id_audience] AS [id_audience], 
+    [audience].[audience_number] AS [audience_number], 
+    [audience].[count_st] AS [count_st]
+    FROM [dbo].[audience] AS [audience]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="campus" EntityType="Self.campus" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [campus].[id_cam] AS [id_cam], 
+    [campus].[address_cam] AS [address_cam]
+    FROM [dbo].[campus] AS [campus]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="gr_fl" Association="Self.gr_fl">
+            <End Role="flow" EntitySet="flow" />
+            <End Role="groups" EntitySet="groups" />
+          </AssociationSet>
+          <AssociationSet Name="kaf" Association="Self.kaf">
+            <End Role="kafedra" EntitySet="kafedra" />
+            <End Role="subjects" EntitySet="subjects" />
+          </AssociationSet>
+          <AssociationSet Name="kaf_l" Association="Self.kaf_l">
+            <End Role="kafedra" EntitySet="kafedra" />
+            <End Role="lecturer" EntitySet="lecturer" />
+          </AssociationSet>
+          <AssociationSet Name="sh_cam" Association="Self.sh_cam">
+            <End Role="campus" EntitySet="campus" />
+            <End Role="shchedule" EntitySet="shchedule" />
+          </AssociationSet>
+          <AssociationSet Name="sh_gr" Association="Self.sh_gr">
+            <End Role="groups" EntitySet="groups" />
+            <End Role="shchedule" EntitySet="shchedule" />
+          </AssociationSet>
+          <AssociationSet Name="sh_lec" Association="Self.sh_lec">
+            <End Role="lecturer" EntitySet="lecturer" />
+            <End Role="shchedule" EntitySet="shchedule" />
+          </AssociationSet>
+          <AssociationSet Name="sh_sub" Association="Self.sh_sub">
+            <End Role="subjects" EntitySet="subjects" />
+            <End Role="shchedule" EntitySet="shchedule" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="rozkladModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="flow">
+          <Key>
+            <PropertyRef Name="id_flow" />
+          </Key>
+          <Property Name="id_flow" Type="Int32" Nullable="false" />
+          <Property Name="flow_name" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="st_count" Type="Int32" />
+          <NavigationProperty Name="groups" Relationship="Self.gr_fl" FromRole="flow" ToRole="groups" />
+        </EntityType>
+        <EntityType Name="group">
+          <Key>
+            <PropertyRef Name="id_gr" />
+          </Key>
+          <Property Name="id_gr" Type="Int32" Nullable="false" />
+          <Property Name="group_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="st_counts" Type="Int32" />
+          <Property Name="id_fl" Type="Int32" />
+          <NavigationProperty Name="flow" Relationship="Self.gr_fl" FromRole="groups" ToRole="flow" />
+          <NavigationProperty Name="shchedules" Relationship="Self.sh_gr" FromRole="groups" ToRole="shchedule" />
+        </EntityType>
+        <EntityType Name="kafedra">
+          <Key>
+            <PropertyRef Name="id_kaf" />
+          </Key>
+          <Property Name="id_kaf" Type="Int32" Nullable="false" />
+          <Property Name="kaf_name" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="subjects" Relationship="Self.kaf" FromRole="kafedra" ToRole="subjects" />
+          <NavigationProperty Name="lecturers" Relationship="Self.kaf_l" FromRole="kafedra" ToRole="lecturer" />
+        </EntityType>
+        <EntityType Name="lecturer">
+          <Key>
+            <PropertyRef Name="id_lecturer" />
+          </Key>
+          <Property Name="id_lecturer" Type="Int32" Nullable="false" />
+          <Property Name="lect_name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="position" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="kaf_lec" Type="Int32" />
+          <NavigationProperty Name="kafedra" Relationship="Self.kaf_l" FromRole="lecturer" ToRole="kafedra" />
+          <NavigationProperty Name="shchedules" Relationship="Self.sh_lec" FromRole="lecturer" ToRole="shchedule" />
+        </EntityType>
+        <EntityType Name="shchedule">
+          <Key>
+            <PropertyRef Name="pair_num" />
+            <PropertyRef Name="id_group" />
+            <PropertyRef Name="id_subject" />
+            <PropertyRef Name="id_lecturer" />
+            <PropertyRef Name="id_campus" />
+            <PropertyRef Name="id_audience" />
+          </Key>
+          <Property Name="day_week" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="pair_num" Type="Int32" Nullable="false" />
+          <Property Name="id_group" Type="Int32" Nullable="false" />
+          <Property Name="id_subject" Type="Int32" Nullable="false" />
+          <Property Name="id_lecturer" Type="Int32" Nullable="false" />
+          <Property Name="id_campus" Type="Int32" Nullable="false" />
+          <Property Name="id_audience" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="group" Relationship="Self.sh_gr" FromRole="shchedule" ToRole="groups" />
+          <NavigationProperty Name="lecturer" Relationship="Self.sh_lec" FromRole="shchedule" ToRole="lecturer" />
+          <NavigationProperty Name="campu" Relationship="Self.sh_cam" FromRole="shchedule" ToRole="campus" />
+          <NavigationProperty Name="subject" Relationship="Self.sh_sub" FromRole="shchedule" ToRole="subjects" />
+        </EntityType>
+        <EntityType Name="subject">
+          <Key>
+            <PropertyRef Name="id_sub" />
+          </Key>
+          <Property Name="id_sub" Type="Int32" Nullable="false" />
+          <Property Name="sub_name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="sab_kaf" Type="Int32" />
+          <NavigationProperty Name="kafedra" Relationship="Self.kaf" FromRole="subjects" ToRole="kafedra" />
+          <NavigationProperty Name="shchedules" Relationship="Self.sh_sub" FromRole="subjects" ToRole="shchedule" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="audience">
+          <Key>
+            <PropertyRef Name="id_audience" />
+            <PropertyRef Name="audience_number" />
+          </Key>
+          <Property Name="id_audience" Type="Int32" Nullable="false" />
+          <Property Name="audience_number" Type="Int32" Nullable="false" />
+          <Property Name="count_st" Type="Int32" />
+        </EntityType>
+        <EntityType Name="campu">
+          <Key>
+            <PropertyRef Name="id_cam" />
+          </Key>
+          <Property Name="id_cam" Type="Int32" Nullable="false" />
+          <Property Name="address_cam" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="shchedules" Relationship="Self.sh_cam" FromRole="campus" ToRole="shchedule" />
+        </EntityType>
+        <Association Name="gr_fl">
+          <End Role="flow" Type="Self.flow" Multiplicity="0..1" />
+          <End Role="groups" Type="Self.group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="flow">
+              <PropertyRef Name="id_flow" />
+            </Principal>
+            <Dependent Role="groups">
+              <PropertyRef Name="id_fl" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="sh_gr">
+          <End Role="groups" Type="Self.group" Multiplicity="1" />
+          <End Role="shchedule" Type="Self.shchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="groups">
+              <PropertyRef Name="id_gr" />
+            </Principal>
+            <Dependent Role="shchedule">
+              <PropertyRef Name="id_group" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="kaf">
+          <End Role="kafedra" Type="Self.kafedra" Multiplicity="0..1" />
+          <End Role="subjects" Type="Self.subject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kafedra">
+              <PropertyRef Name="id_kaf" />
+            </Principal>
+            <Dependent Role="subjects">
+              <PropertyRef Name="sab_kaf" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="kaf_l">
+          <End Role="kafedra" Type="Self.kafedra" Multiplicity="0..1" />
+          <End Role="lecturer" Type="Self.lecturer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kafedra">
+              <PropertyRef Name="id_kaf" />
+            </Principal>
+            <Dependent Role="lecturer">
+              <PropertyRef Name="kaf_lec" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="sh_lec">
+          <End Role="lecturer" Type="Self.lecturer" Multiplicity="1" />
+          <End Role="shchedule" Type="Self.shchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="lecturer">
+              <PropertyRef Name="id_lecturer" />
+            </Principal>
+            <Dependent Role="shchedule">
+              <PropertyRef Name="id_lecturer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="sh_cam">
+          <End Role="campus" Type="Self.campu" Multiplicity="1" />
+          <End Role="shchedule" Type="Self.shchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="campus">
+              <PropertyRef Name="id_cam" />
+            </Principal>
+            <Dependent Role="shchedule">
+              <PropertyRef Name="id_campus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="sh_sub">
+          <End Role="subjects" Type="Self.subject" Multiplicity="1" />
+          <End Role="shchedule" Type="Self.shchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subjects">
+              <PropertyRef Name="id_sub" />
+            </Principal>
+            <Dependent Role="shchedule">
+              <PropertyRef Name="id_subject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="rozkladEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="flows" EntityType="Self.flow" />
+          <EntitySet Name="groups" EntityType="Self.group" />
+          <EntitySet Name="kafedras" EntityType="Self.kafedra" />
+          <EntitySet Name="lecturers" EntityType="Self.lecturer" />
+          <EntitySet Name="shchedules" EntityType="Self.shchedule" />
+          <EntitySet Name="subjects" EntityType="Self.subject" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="audiences" EntityType="Self.audience" />
+          <EntitySet Name="campus" EntityType="Self.campu" />
+          <AssociationSet Name="gr_fl" Association="Self.gr_fl">
+            <End Role="flow" EntitySet="flows" />
+            <End Role="groups" EntitySet="groups" />
+          </AssociationSet>
+          <AssociationSet Name="sh_gr" Association="Self.sh_gr">
+            <End Role="groups" EntitySet="groups" />
+            <End Role="shchedule" EntitySet="shchedules" />
+          </AssociationSet>
+          <AssociationSet Name="kaf" Association="Self.kaf">
+            <End Role="kafedra" EntitySet="kafedras" />
+            <End Role="subjects" EntitySet="subjects" />
+          </AssociationSet>
+          <AssociationSet Name="kaf_l" Association="Self.kaf_l">
+            <End Role="kafedra" EntitySet="kafedras" />
+            <End Role="lecturer" EntitySet="lecturers" />
+          </AssociationSet>
+          <AssociationSet Name="sh_lec" Association="Self.sh_lec">
+            <End Role="lecturer" EntitySet="lecturers" />
+            <End Role="shchedule" EntitySet="shchedules" />
+          </AssociationSet>
+          <AssociationSet Name="sh_cam" Association="Self.sh_cam">
+            <End Role="campus" EntitySet="campus" />
+            <End Role="shchedule" EntitySet="shchedules" />
+          </AssociationSet>
+          <AssociationSet Name="sh_sub" Association="Self.sh_sub">
+            <End Role="subjects" EntitySet="subjects" />
+            <End Role="shchedule" EntitySet="shchedules" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="rozkladModelStoreContainer" CdmEntityContainer="rozkladEntities2">
+          <EntitySetMapping Name="flows">
+            <EntityTypeMapping TypeName="rozkladModel.flow">
+              <MappingFragment StoreEntitySet="flow">
+                <ScalarProperty Name="id_flow" ColumnName="id_flow" />
+                <ScalarProperty Name="flow_name" ColumnName="flow_name" />
+                <ScalarProperty Name="st_count" ColumnName="st_count" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="groups">
+            <EntityTypeMapping TypeName="rozkladModel.group">
+              <MappingFragment StoreEntitySet="groups">
+                <ScalarProperty Name="id_gr" ColumnName="id_gr" />
+                <ScalarProperty Name="group_name" ColumnName="group_name" />
+                <ScalarProperty Name="st_counts" ColumnName="st_counts" />
+                <ScalarProperty Name="id_fl" ColumnName="id_fl" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="kafedras">
+            <EntityTypeMapping TypeName="rozkladModel.kafedra">
+              <MappingFragment StoreEntitySet="kafedra">
+                <ScalarProperty Name="id_kaf" ColumnName="id_kaf" />
+                <ScalarProperty Name="kaf_name" ColumnName="kaf_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="lecturers">
+            <EntityTypeMapping TypeName="rozkladModel.lecturer">
+              <MappingFragment StoreEntitySet="lecturer">
+                <ScalarProperty Name="id_lecturer" ColumnName="id_lecturer" />
+                <ScalarProperty Name="lect_name" ColumnName="lect_name" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="kaf_lec" ColumnName="kaf_lec" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="shchedules">
+            <EntityTypeMapping TypeName="rozkladModel.shchedule">
+              <MappingFragment StoreEntitySet="shchedule">
+                <ScalarProperty Name="day_week" ColumnName="day_week" />
+                <ScalarProperty Name="pair_num" ColumnName="pair_num" />
+                <ScalarProperty Name="id_group" ColumnName="id_group" />
+                <ScalarProperty Name="id_subject" ColumnName="id_subject" />
+                <ScalarProperty Name="id_lecturer" ColumnName="id_lecturer" />
+                <ScalarProperty Name="id_campus" ColumnName="id_campus" />
+                <ScalarProperty Name="id_audience" ColumnName="id_audience" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subjects">
+            <EntityTypeMapping TypeName="rozkladModel.subject">
+              <MappingFragment StoreEntitySet="subjects">
+                <ScalarProperty Name="id_sub" ColumnName="id_sub" />
+                <ScalarProperty Name="sub_name" ColumnName="sub_name" />
+                <ScalarProperty Name="sab_kaf" ColumnName="sab_kaf" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="rozkladModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="audiences">
+            <EntityTypeMapping TypeName="rozkladModel.audience">
+              <MappingFragment StoreEntitySet="audience">
+                <ScalarProperty Name="id_audience" ColumnName="id_audience" />
+                <ScalarProperty Name="audience_number" ColumnName="audience_number" />
+                <ScalarProperty Name="count_st" ColumnName="count_st" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="campus">
+            <EntityTypeMapping TypeName="rozkladModel.campu">
+              <MappingFragment StoreEntitySet="campus">
+                <ScalarProperty Name="id_cam" ColumnName="id_cam" />
+                <ScalarProperty Name="address_cam" ColumnName="address_cam" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

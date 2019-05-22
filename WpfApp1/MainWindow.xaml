@@ -1,0 +1,53 @@
+﻿<Window x:Class="WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="Patterns" Height="623.6" Width="800">
+    <Grid RenderTransformOrigin="0.498,0.525" Height="530" Margin="0,0,-0.4,0.4" VerticalAlignment="Bottom">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <DataGrid Name="myGrid" HorizontalAlignment="Left" Height="100" Margin="165,32,0,0" VerticalAlignment="Top" Width="216" ></DataGrid>
+        <TextBox Name="tablename" HorizontalAlignment="Left" Height="23" Margin="26,58,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Show table" HorizontalAlignment="Left" Margin="42,86,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Height="19"/>
+        <Label Content="Write table name:" HorizontalAlignment="Left" Margin="26,32,0,0" VerticalAlignment="Top" Height="26" Width="104"/>
+        <TextBox x:Name="txt" HorizontalAlignment="Left" Height="23" Margin="405,36,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" BorderThickness="0"/>
+        <Button Content="check admin" HorizontalAlignment="Left" Margin="645,36,0,0" VerticalAlignment="Top" Width="75" Click="ButtonClickAdmin" Height="19"/>
+        <TextBox Name="txtAdmin" HorizontalAlignment="Left" Height="38" Margin="615,67,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="148"/>
+        <Button Content="Add item to table shchedule" HorizontalAlignment="Left" Margin="601,224,0,0" VerticalAlignment="Top" Width="175" Click="Button_Click_1" Height="46"/>
+        <TextBox Name="day_text" HorizontalAlignment="Left" Height="23" Margin="26,196,0,0" TextWrapping="Wrap" Text="&#xA;" VerticalAlignment="Top" Width="71"/>
+        <TextBox Name="pair_text" HorizontalAlignment="Left" Height="23" Margin="116,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" />
+        <TextBox Name="group_text" HorizontalAlignment="Left" Height="23" Margin="204,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70"/>
+        <TextBox Name="subject_text" HorizontalAlignment="Left" Height="23" Margin="310,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="71"/>
+        <TextBox Name="lecturer_text" HorizontalAlignment="Left" Height="23" Margin="410,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70"/>
+        <TextBox Name="campus_text" HorizontalAlignment="Left" Height="23" Margin="509,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70"/>
+        <TextBox Name="audience_text" HorizontalAlignment="Left" Height="23" Margin="601,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70"/>
+        <Button Name="btn" Content="check lecturer" HorizontalAlignment="Left" Margin="247,262,0,0" VerticalAlignment="Top" Width="91" Click="Btn_Click" Height="31"/>
+        <TextBox Name="txtlecID" HorizontalAlignment="Left" Height="23" Margin="360,270,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="78" RenderTransformOrigin="0.931,0.896"/>
+        <TextBox Name="txtlecc" HorizontalAlignment="Left" Height="23" Margin="99,270,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
+        <Label Content="Enter lecturer name:" HorizontalAlignment="Left" Margin="99,244,0,0" VerticalAlignment="Top" Height="26" Width="117"/>
+        <Label Content="Enter day:" HorizontalAlignment="Left" Margin="26,165,0,0" VerticalAlignment="Top" Height="26" Width="62"/>
+        <Label Content="Enter pair:" HorizontalAlignment="Left" Margin="119,165,0,0" VerticalAlignment="Top" Height="26" Width="64"/>
+        <Label Content="Enter group:" HorizontalAlignment="Left" Margin="204,165,0,0" VerticalAlignment="Top" Height="26" Width="75"/>
+        <Label Content="Enter subject:" HorizontalAlignment="Left" Margin="299,165,0,0" VerticalAlignment="Top" Height="26" Width="82"/>
+        <Label Content="Enter lecturer:" HorizontalAlignment="Left" Margin="410,165,0,0" VerticalAlignment="Top" Height="26" Width="84"/>
+        <Label Content="Enter campus:" HorizontalAlignment="Left" Margin="494,165,0,0" VerticalAlignment="Top" Height="26" Width="85"/>
+        <Label Content="Enter audience:" HorizontalAlignment="Left" Margin="601,165,0,0" VerticalAlignment="Top" Height="26" Width="91"/>
+        <TextBox Name="first" HorizontalAlignment="Left" Height="23" Margin="26,388,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="second" HorizontalAlignment="Left" Height="23" Margin="204,388,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="third" HorizontalAlignment="Left" Height="23" Margin="391,388,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="four" HorizontalAlignment="Left" Height="23" Margin="586,388,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Add values to table &quot;Group&quot; or &quot;Lecturer&quot;" HorizontalAlignment="Left" Margin="10,316,0,0" VerticalAlignment="Top" Width="270" Height="26"/>
+        <Button Content="Add item to group" HorizontalAlignment="Left" Margin="99,442,0,0" VerticalAlignment="Top" Width="147" Height="28" Click="Button_to_group" />
+        <Button Content="Add item to lecturer" HorizontalAlignment="Left" Margin="451,442,0,0" VerticalAlignment="Top" Width="154" Height="28" Click="Button_to_lecturer"/>
+        <Label Content="schedule" HorizontalAlignment="Left" Margin="299,-69,0,0" VerticalAlignment="Top" FontSize="36"/>
+        <Label Content="Enter ID of group or lecturer" HorizontalAlignment="Left" Margin="0,357,0,0" VerticalAlignment="Top"/>
+        <Label Content="Enter name of group or lecturer" HorizontalAlignment="Left" Margin="176,357,0,0" VerticalAlignment="Top"/>
+        <Label Content="Enter amount of students &#xD;&#xA;or lecturer position" HorizontalAlignment="Left" Margin="391,346,0,0" VerticalAlignment="Top"/>
+        <Label Content="Enter ID of group`s flow&#xD;&#xA;or ID of lecturer`s chain" HorizontalAlignment="Left" Margin="572,339,0,0" VerticalAlignment="Top" Width="148"/>
+
+    </Grid>
+</Window>
